@@ -1,7 +1,11 @@
 import pygame
 
+from Bullet import Bullet
 from Settings import Settings
 from Ship import Ship
+
+from pygame.sprite import Group
+
 
 class Game():
     def __init__(self):
@@ -12,9 +16,10 @@ class Game():
 
         self.ship = Ship(self.screen)
 
+        self.bullets = Group()
         # Startup app sound
         pygame.mixer.music.load('sounds/start.mp3')
-        pygame.mixer.music.play(0)
+        #pygame.mixer.music.play(0)
 
     def draw(self):
         # Draw Background & a rectangle
@@ -24,19 +29,28 @@ class Game():
         # Draw Ship
         self.ship.draw()
 
-
+        for bullet in self.bullets.sprites():
+            bullet.draw()
         # Make the most recently Drawn screen visible.
         pygame.display.flip()
 
     def update(self):
         # Draw Background
         self.ship.update()
+        for bullet in self.bullets.sprites():
+            bullet.update()
+        for bullet in self.bullets.copy(): # .copy() is used in order to use bullets.remove above
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def processKeyDown(self, key):
         if key == pygame.K_RIGHT:
             self.ship.moveRight(True)
         elif key == pygame.K_LEFT:
             self.ship.moveLeft(True)
+        elif key == pygame.K_SPACE:
+            new_bullet = Bullet(self.settings, self.screen, self.ship)
+            self.bullets.add(new_bullet)
 
     def processKeyUp(self, key):
         if key == pygame.K_RIGHT:

@@ -1,5 +1,6 @@
 import pygame
 
+
 class Ship():
     def __init__(self, screen):
         """Initialize the ship and set its starting position."""
@@ -20,11 +21,9 @@ class Ship():
         self.movingRight = movement
         self.movingLeft = False
 
-
     def moveLeft(self, movement):
         self.movingRight = False
-        self.movingLeft= movement
-
+        self.movingLeft = movement
 
     def update(self):
         if self.movingRight:
@@ -34,6 +33,7 @@ class Ship():
             if self.rect.centerx > 0:
                 self.rect.centerx -= 1
 
+
     def draw(self):
         """Draw the ship at its current location."""
-        self.screen.blit(self.image, self.rect) # draws the Ship image into the screen
+        self.screen.blit(self.image, self.rect)  # draws the Ship image into the screen
